@@ -1,0 +1,882 @@
+#include "Wisteria/Core.fxsub"
+
+#if UseIBLs == 1
+TextureCube DiffuseIBLTexture < string ResourceName = IBL_Diffuse_Texture ;>;
+samplerCUBE DiffuseIBLSampler = sampler_state 
+{
+	Texture = <DiffuseIBLTexture>;
+    MINFILTER = Linear;
+    MAGFILTER = Linear;
+    MIPFILTER = Linear;
+    ADDRESSU  = Clamp;
+    ADDRESSV  = Clamp;
+	ADDRESSW  = Clamp;
+};
+
+TextureCube SpecularIBLTexture < string ResourceName = IBL_Specular_Texture ;>;
+samplerCUBE SpecularIBLSampler = sampler_state 
+{
+	Texture = <SpecularIBLTexture>;
+    MINFILTER = Linear;
+    MAGFILTER = Linear;
+    MIPFILTER = Linear;
+    ADDRESSU  = Clamp;
+    ADDRESSV  = Clamp;
+	ADDRESSW  = Clamp;
+};
+
+#endif
+
+#if UseSingleMap == 1
+Texture2D SpecularTexture < string ResourceName = Specular_Texture ;>;
+sampler2D SpecularSampler = sampler_state 
+{
+	Texture = <SpecularTexture>;
+    MINFILTER = Anisotropic;
+    MAGFILTER = Anisotropic;
+    MIPFILTER = Anisotropic;
+    ADDRESSU  = Wrap;
+    ADDRESSV  = Wrap;
+	ADDRESSW  = Wrap;
+};
+
+Texture2D RoughnessTexture < string ResourceName = Roughness_Texture ;>;
+sampler2D RoughnessSampler = sampler_state 
+{
+	Texture = <RoughnessTexture>;
+    MINFILTER = Anisotropic;
+    MAGFILTER = Anisotropic;
+    MIPFILTER = Anisotropic;
+    ADDRESSU  = Wrap;
+    ADDRESSV  = Wrap;
+	ADDRESSW  = Wrap;
+};
+
+Texture2D MetallicTexture < string ResourceName = Metallic_Texture ;>;
+sampler2D MetallicSampler = sampler_state 
+{
+	Texture = <MetallicTexture>;
+    MINFILTER = Anisotropic;
+    MAGFILTER = Anisotropic;
+    MIPFILTER = Anisotropic;
+    ADDRESSU  = Wrap;
+    ADDRESSV  = Wrap;
+	ADDRESSW  = Wrap;
+};
+
+Texture2D AmbientOcclusionTexture < string ResourceName = AmbientOcclusion_Texture ;>;
+sampler2D AmbientOcclusionSampler = sampler_state 
+{
+	Texture = <AmbientOcclusionTexture>;
+    MINFILTER = Anisotropic;
+    MAGFILTER = Anisotropic;
+    MIPFILTER = Anisotropic;
+    ADDRESSU  = Wrap;
+    ADDRESSV  = Wrap;
+	ADDRESSW  = Wrap;
+};
+#endif
+
+#if UseMergedMap1 == 1
+Texture2D PBR1Texture < string ResourceName = PBR1_Texture ;>;
+sampler2D PBR1Sampler = sampler_state 
+{
+	Texture = <PBR1Texture>;
+    MINFILTER = Anisotropic;
+    MAGFILTER = Anisotropic;
+    MIPFILTER = Anisotropic;
+    ADDRESSU  = Wrap;
+    ADDRESSV  = Wrap;
+	ADDRESSW  = Wrap;
+};
+#endif
+
+#if UseMergedMap2 == 1
+Texture2D PBR2Texture < string ResourceName = PBR2_Texture ;>;
+sampler2D PBR2Sampler = sampler_state 
+{
+	Texture = <PBR2Texture>;
+    MINFILTER = Anisotropic;
+    MAGFILTER = Anisotropic;
+    MIPFILTER = Anisotropic;
+    ADDRESSU  = Wrap;
+    ADDRESSV  = Wrap;
+	ADDRESSW  = Wrap;
+};
+#endif
+
+#if UseNormalMap == 1
+Texture2D NormalTexture <string ResourceName = NormalMap_Texture;>;
+	sampler2D NormalSampler = sampler_state 
+{
+	Texture = <NormalTexture>;
+    MINFILTER = Anisotropic;
+    MAGFILTER = Anisotropic;
+    MIPFILTER = Anisotropic;
+    ADDRESSU  = Wrap;
+    ADDRESSV  = Wrap;
+	ADDRESSW  = Wrap;
+};
+#endif
+
+#if UseDetailNormalMap == 1
+Texture2D DetailNormalTexture <string ResourceName = DetailNormalMap_Texture;>;
+	sampler2D DetailNormalSampler = sampler_state 
+{
+	Texture = <DetailNormalTexture>;
+    MINFILTER = Anisotropic;
+    MAGFILTER = Anisotropic;
+    MIPFILTER = Anisotropic;
+    ADDRESSU  = Wrap;
+    ADDRESSV  = Wrap;
+	ADDRESSW  = Wrap;
+};
+#endif
+
+#if UseDetailSpecularMap == 1
+Texture2D DetailSpecularTexture <string ResourceName = DetailSpecularMap_Texture;>;
+	sampler2D DetailSpecularSampler = sampler_state 
+{
+	Texture = <DetailSpecularTexture>;
+    MINFILTER = Anisotropic;
+    MAGFILTER = Anisotropic;
+    MIPFILTER = Anisotropic;
+    ADDRESSU  = Wrap;
+    ADDRESSV  = Wrap;
+	ADDRESSW  = Wrap;
+};
+#endif
+
+#if UseDetailDiffuse == 1
+Texture2D DetailDiffuseTexture <string ResourceName = DetailDiffuse_Texture;>;
+	sampler2D DetailDiffuseSampler = sampler_state 
+{
+	Texture = <DetailDiffuseTexture>;
+    MINFILTER = Anisotropic;
+    MAGFILTER = Anisotropic;
+    MIPFILTER = Anisotropic;
+    ADDRESSU  = Wrap;
+    ADDRESSV  = Wrap;
+	ADDRESSW  = Wrap;
+};
+#endif
+
+#if UseEnvMap == 1
+TextureCube EnvMapTexture < string ResourceName = EnvMap_Texture ;>;
+samplerCUBE EnvMapSampler = sampler_state 
+{
+	Texture = <EnvMapTexture>;
+    MINFILTER = Linear;
+    MAGFILTER = Linear;
+    MIPFILTER = Linear;
+    ADDRESSU  = Clamp;
+    ADDRESSV  = Clamp;
+	ADDRESSW  = Clamp;
+};
+#endif
+
+#if UseShadowColorMap == 1
+Texture2D ShadowColorTexture <string ResourceName = ShadowColorMap_Texture;>;
+	sampler2D ShadowColorMapSampler = sampler_state 
+{
+	Texture = <ShadowColorTexture>;
+    MINFILTER = Anisotropic;
+    MAGFILTER = Anisotropic;
+    MIPFILTER = Anisotropic;
+    ADDRESSU  = Wrap;
+    ADDRESSV  = Wrap;
+	ADDRESSW  = Wrap;
+};
+#endif
+
+#if UseSelfShadowMap == 1
+Texture2D SelfShadowTexture <string ResourceName = SelfShadowMap_Texture;>;
+	sampler2D SelfShadowMapSampler = sampler_state 
+{
+	Texture = <SelfShadowTexture>;
+    MINFILTER = Anisotropic;
+    MAGFILTER = Anisotropic;
+    MIPFILTER = Anisotropic;
+    ADDRESSU  = Wrap;
+    ADDRESSV  = Wrap;
+	ADDRESSW  = Wrap;
+};
+#endif
+
+///////////////////////////////////////////////////////////////////////////
+struct vs_in
+{
+	float4 Pos 		:POSITION0;
+	float3 Normal	:NORMAL0;
+	float4 UV1 		:TEXCOORD0;
+	float4 UV2 		:TEXCOORD1;
+	float4 UV3 		:TEXCOORD2;
+	float4 UV4 		:TEXCOORD3;
+};
+	
+struct vs_out
+{
+	float4 Pos		:SV_POSITION;
+	float4 WPos		:TEXCOORD0;
+	float4 PPos		:TEXCOORD1;
+	float3 Normal	:NORMAL;
+	float4 UV1		:TEXCOORD2;
+	float4 UV2		:TEXCOORD3;
+	float4 UV3		:TEXCOORD4;
+	float4 UV4		:TEXCOORD5;
+};
+	
+vs_out vs_shader(vs_in i, vs_out o)
+{
+	o.Pos = mul(i.Pos, WVP);
+	o.WPos = mul(i.Pos, W);
+	o.PPos = o.Pos;
+	o.Normal = i.Normal;
+	o.UV1 = i.UV1;
+	o.UV2 = i.UV2;
+	o.UV3 = i.UV3;
+	o.UV4 = i.UV4;
+	
+	return o;
+}
+
+///////////////////////////////////////////////////////////////////////////
+float4 ps_shader(vs_out i, uniform bool useTexture):COLOR0
+{
+	float3 dv1 = ddx(i.WPos);
+	float3 dv2 = ddy(i.WPos);
+	float2 duv1 = ddx(i.UV1);
+	float2 duv2 = ddy(i.UV1);
+	float direction = duv1.x * duv2.y - duv1.y * duv2.x > 0.0f ? 1.0f : -1.0f;
+	float3 tangent = (dv1 * duv2.y - dv2 * duv1.y) * direction;
+	float3 binormal = (dv2 * duv1.x - dv1 * duv2.x) * direction;
+
+	/////////////////////////////
+	float4 Result;
+	float4 Color;
+	float3 BRDF;
+	float3 _Shading;
+	float Specular;
+	float Roughness;
+	float Metallic;
+	float AmbientOcclusion;
+	
+	/////////////////////////////
+	float3 Normal 	= normalize(i.Normal);
+		#if UseNormalMap == 1
+			float3 NormalTex = tex2D(NormalSampler, NormalMap_UV * Normal_Scale) * 2 - 1;
+			
+			if (NormalMap_R_Flip)
+			{NormalTex.r *= -1;}
+			
+			if (NormalMap_G_Flip)
+			{NormalTex.g *= -1;}
+			
+			NormalTex.b -= Normal_Intensity-1;
+			
+			#if NormalMap_Type == 0
+				Normal = normalize
+				(normalize(tangent) * NormalTex.x + 
+				normalize(binormal) * NormalTex.y +  
+				normalize(Normal) * NormalTex.z);
+			#endif
+		#endif
+		#if UseDetailNormalMap == 1
+			float3 DetailNormalTex = tex2D(DetailNormalSampler, DetailNormalMap_UV * DetailNormal_Scale) * 2 - 1;
+			
+			if (DetailNormalMap_R_Flip)
+			{DetailNormalTex.r *= -1;}
+			
+			if (DetailNormalMap_G_Flip)
+			{DetailNormalTex.g *= -1;}
+		
+			DetailNormalTex.b -= DetailNormal_Intensity-1;
+			
+			#if NormalMap_Type == 1
+				Normal = normalize
+				(normalize(tangent) * DetailNormalTex.x + 
+				normalize(binormal) * DetailNormalTex.y + 
+				normalize(Normal) * DetailNormalTex.z);
+			#endif
+		#endif
+		#if NormalMap_Type == 2
+				Normal = normalize
+				(normalize(tangent) * (NormalTex.x + DetailNormalTex.x) + 
+				normalize(binormal) * (NormalTex.y + DetailNormalTex.y) + 
+				normalize(Normal) * (NormalTex.z + DetailNormalTex.z));
+		#endif
+	
+	float3 LightDir = normalize(-MMD_Light);
+	float3 View 	= normalize(MMD_Camera - i.WPos);
+	float3 HalfDir 	= normalize(LightDir + View);
+	float  NdotV 	= saturate(dot(Normal, View));
+	float  NdotL 	= saturate(dot(Normal, LightDir));
+	float  NdotH 	= saturate(dot(Normal, HalfDir));
+	float  LdotV 	= saturate(dot(LightDir, View));
+	float  LdotH 	= saturate(dot(LightDir, HalfDir));
+	float  HdotV 	= saturate(dot(HalfDir, View));
+	float3 RefVec = 2 * saturate(NdotV) * Normal - View;
+	
+	/////////////////////////////
+	float4 DiffuseTex = tex2D(PMXDiffuse_Sampler, i.UV1);
+	float3 ToonTex = tex2D(PMXToon_Sampler, dot(Normal, LightDir) * -0.5 + 0.5);
+	float2 SpaVec = mul(Normal, WV) * Spa_Scale;
+		   SpaVec.x = SpaVec.x *  0.5+0.5;
+		   SpaVec.y = SpaVec.y * -0.5+0.5;
+	float4 PMXSpaTex = tex2D(PMXSPA_Sampler, SpaVec)* Spa_Intensity * SpaColor;
+
+	#if UseSingleMap == 1
+		float SpecularTex = tex2D(SpecularSampler, i.UV1);
+		float RoughnessTex = tex2D(RoughnessSampler, i.UV1);
+		float MetallicTex = tex2D(MetallicSampler, i.UV1);
+		float AmbientOcclusionTex = tex2D(AmbientOcclusionSampler, i.UV1);
+	#endif
+	#if UseMergedMap1 == 1
+		float4 PBR1Tex = tex2D(PBR1Sampler, i.UV1);
+	#endif
+	#if UseMergedMap2 == 1
+		float4 PBR2Tex = tex2D(PBR2Sampler, i.UV1);
+	#endif
+	#if UseDetailSpecularMap == 1
+		float4 DetailSpecularTex = tex2D(DetailSpecularSampler, DetailSpecularMap_UV * DetailSpecular_Scale);
+	#endif
+	#if UseDetailDiffuse == 1
+		float4 DetailDiffuseTex = tex2D(DetailDiffuseSampler, DetailDiffuse_UV * DetailDiffuse_Scale);
+	#endif
+	#if UseShadowColorMap == 1
+		float4 ShadowColorTex = tex2D(ShadowColorMapSampler, i.UV1);
+	#endif
+	#if UseSelfShadowMap == 1
+		float SelfShadowTex = tex2D(SelfShadowMapSampler, i.UV1);
+	#endif
+	
+	/////////////////////////////
+	Specular = PBR_Specular;
+	Roughness = PBR_Roughness;
+	Metallic = PBR_Metallic;
+	AmbientOcclusion = PBR_AmbientOcclusion;
+	
+	#if UseSingleMap == 1
+		if(UseSpecularMap)
+		{
+			Specular = SpecularTex;
+		}
+		if(UseRoughnessMap)
+		{
+			Roughness = RoughnessTex;
+		}
+		if(UseMetallicMap)
+		{
+			Metallic = MetallicTex;
+		}
+		if(UseAmbientOcclusion)
+		{ 
+			AmbientOcclusion = AmbientOcclusionTex; 
+		}
+	#endif
+	
+	#if UseMergedMap1 == 1
+		if(UseSpecularMap)
+		{
+			if (Specular_Use_PBRMap1)
+			{
+				Specular = PBR1Tex.PBRMap1_SpecularMap;
+			}
+		}
+		if(UseRoughnessMap)
+		{
+			if (Roughness_Use_PBRMap1)
+			{
+				Roughness = PBR1Tex.PBRMap1_RoughnessMap;
+			}
+		}
+		if(UseMetallicMap)
+		{
+			if (Metallic_Use_PBRMap1)
+			{
+				Metallic = PBR1Tex.PBRMap1_MetallicMap;
+			}
+		}
+		if(UseAmbientOcclusion)
+		{
+			if (AmbientOcclusion_Use_PBRMap1)
+			{
+				AmbientOcclusion = PBR1Tex.PBRMap1_AmbientOcclusion;
+			}
+		}
+	#endif
+	#if UseMergedMap2 == 1
+		if(UseSpecularMap)
+		{
+			if (Specular_Use_PBRMap2)
+			{
+				Specular = PBR2Tex.PBRMap2_SpecularMap;
+			}
+		}
+		if(UseRoughnessMap)
+		{
+			if (Roughness_Use_PBRMap2)
+			{
+				Roughness = PBR2Tex.PBRMap2_RoughnessMap;
+			}
+		}
+		if(UseMetallicMap)
+		{
+			if (Metallic_Use_PBRMap2)
+			{
+				Metallic = PBR2Tex.PBRMap2_MetallicMap;
+			}
+		}
+		if(UseAmbientOcclusion)
+		{
+			if (AmbientOcclusion_Use_PBRMap2)
+			{
+				AmbientOcclusion = PBR2Tex.PBRMap2_AmbientOcclusion;
+			}
+		}
+	#endif
+	
+	/////////////////////////////
+	#if Shading == 0
+		_Shading = 1;
+		#elif Shading == 1
+		_Shading = NdotL;
+		#elif Shading == 2
+		_Shading = dot(Normal, LightDir) * 0.5 + 0.5;
+		#elif Shading == 3
+		_Shading = ToonTex;
+	#endif
+	
+	#if ToneMap == 1
+		_Shading = SrgbToLinear(_Shading);
+	#endif
+	
+	/////////////////////////////
+	float Shadow;
+	float3 ShadowCol;
+	
+	#if ShadowColor_Type == 0
+		ShadowCol = ShadowColor;
+		#elif ShadowColor_Type == 1
+		ShadowCol = ShadowColorTex;
+	#endif
+	
+	if(HgShadow_Valid)
+		{
+			Shadow = HgShadow_GetSelfShadowRate(i.PPos);
+			Shadow = min(_Shading, Shadow);
+				#if UseSelfShadowMap == 1
+					Shadow = lerp(1, lerp(Shadow, 1, SelfShadowTex), NdotL);
+				#endif
+		}
+		else
+		{Shadow = 1;}
+
+	/////////////////////////////
+	Color = PMX_Diffuse * Diffuse_Color;
+	
+		if (useTexture)
+			{Color *= DiffuseTex;}
+	
+		#if UseVertexColor == 1
+			Color.rgb *= lerp(1,VertexColor_UV,VertexColor_RGB_Intensity);
+			Color.a *= lerp(1,VertexColor_UV,VertexColor_A_Intensity);
+		#endif
+	
+		#if UseDetailDiffuse == 1
+			Color.rgb *= lerp(1,DetailDiffuseTex,DetailDiffuse_Intensity);
+		#endif
+	
+			Color.rgb *= saturate(lerp(1,AmbientOcclusion,PBR_AmbientOcclusion));
+	
+		#if ToneMap == 1
+			Color.rgb = SrgbToLinear(Color);
+		#endif
+
+		#if Alpha == 0
+			Color.a = PMX_Diffuse.a * Diffuse_Color.a;
+		#endif
+		
+		#if AlphaClip == 1
+			clip(Color.a - 0.5);
+		#endif
+	
+	/////////////////////////////
+	float3 F0 = lerp(0.04, 1, Metallic);
+		#if Metallic_Use_Color == 1
+			F0 = lerp(0.04, Color, Metallic);
+		#endif
+
+	float3 F = FresnelSchlick(F0, HdotV) * NdotL;
+	float D = ndfGGX(NdotH, Roughness);
+	float G = VisSchlick(Roughness, NdotV, NdotL);
+	
+	float3 specular = (F * D * G) * Specular_Color * Specular;
+		#if UseDetailSpecularMap == 1
+			specular *= lerp(1,DetailSpecularTex,DetailSpecular_Intensity);
+		#endif
+		
+		specular *= lerp(1, Shadow, Specular_Affected_By_Shadows);
+	
+	float3 kd = lerp(1 - F, 0, Metallic);
+		   
+	float3 DiffuseBRDF = (kd * Diffuse_Color);
+	float3 AmbientBRDF = (kd * Ambient_Color);
+	
+	#if UseIBLs == 1
+		#if UseDiffuseIBL == 1
+			float3 DiffuseIBL = texCUBE(DiffuseIBLSampler, Normal * float3(1,1,-1));
+		
+		DiffuseBRDF *= DiffuseIBL;
+		AmbientBRDF *= DiffuseIBL;
+		#endif
+	#endif
+	
+	float3 DiffuseLighting = (DiffuseBRDF) * Color * _Shading + specular;
+	float3 AmbientLighting = (AmbientBRDF) * Color;
+	
+	BRDF = (DiffuseLighting + AmbientLighting);
+	BRDF = lerp((BRDF * ShadowColor) * Shadow_Brightness, BRDF,Shadow);
+	
+	Color.a += specular * Specular_Color.a;
+	
+	#if UseIBLs == 1
+		#if UseSpecularIBL == 1
+		float3 SpecularIBL = texCUBElod(SpecularIBLSampler, float4(RefVec, Roughness * 8));
+		
+		float2 SpecularBRDF = EnvBRDFApprox(saturate(NdotV), Roughness);
+		float3 EnvLighting = (SpecularIBL + Ambient_Color) * (F0 * SpecularBRDF.x + SpecularBRDF.y);
+		BRDF += EnvLighting;
+		#endif
+	#endif
+
+	/////////////////////////////
+	#if UseRim == 1
+		float Rim = pow(1-NdotV, Rim_Gradient) * Rim_Intensity;
+			Rim *= lerp(1,NdotL,Rim_Use_Shading);
+			
+		#if Rim_Use_SpecularMap == 1
+			Rim *= Specular;
+		#endif
+		#if Rim_Use_DetailSpecularMap == 1
+			Rim *= lerp(1,DetailSpecularTex,DetailSpecular_Intensity);
+		#endif
+		
+			Rim *= lerp(1,Shadow,Rim_Affected_By_Shadows);
+
+		BRDF += Rim * RimColor;
+		Color.a += Rim * RimColor.a;
+	#endif
+	
+	/////////////////////////////
+	#if UseEnvMap == 1
+		float4 EnvMapTex = texCUBE(EnvMapSampler, RefVec) * EnvMap_Intensity;
+			EnvMapTex *= lerp(1,NdotL,EnvMap_Use_Shading);
+			
+		#if EnvMap_Use_SpecularMap == 1
+			EnvMapTex *= Specular;
+		#endif
+		#if EnvMap_Use_DetailSpecularMap == 1
+			EnvMapTex *= lerp(1,DetailSpecularTex,DetailSpecular_Intensity);
+		#endif
+		
+			EnvMapTex *= lerp(1,Shadow,EnvMap_Affected_By_Shadows);
+	
+		BRDF += EnvMapTex * EnvColor;
+		Color.a += EnvMapTex * EnvColor.a;
+	#endif
+	
+	/////////////////////////////
+	#if UseSpa == 1
+		#if Spa_Use_SpecularMap == 1
+			PMXSpaTex *= Specular;
+		#endif
+		#if Spa_Use_DetailSpecularMap == 1
+			PMXSpaTex *= lerp(1,DetailSpecularTex,DetailSpecular_Intensity);
+		#endif
+		
+		#if UseShadows == 1
+			PMXSpaTex *= lerp(1,Shadow,Spa_Affected_By_Shadows);
+		#endif
+	
+		BRDF += PMXSpaTex;
+		Color.a += PMXSpaTex * SpaColor.a;
+	#endif
+		
+	BRDF *= MMD_LightAmbient * 1.65;
+	
+	/////////////////////////////
+	Result.rgb = lerp(BRDF,ToneMapping(BRDF),saturate(ToneMap_Intensity));
+	Result.a = Color.a; 
+	
+	return Result;
+}
+
+///////////////////////////////////////////ShadowsOFF///////////////////////////////////////////
+technique Main0 < string MMDPass = "object"; bool UseTexture = true; >
+	{
+		pass Main 
+		{
+			#if SrcBlend == 0
+				Srcblend = ZERO;
+				#elif SrcBlend == 1
+				Srcblend = ONE;
+				#elif SrcBlend == 2
+				Srcblend = SRCCOLOR;
+				#elif SrcBlend == 3
+				Srcblend = INVSRCCOLOR;
+				#elif SrcBlend == 4
+				Srcblend = SRCALPHA;
+				#elif SrcBlend == 5
+				Srcblend = INVSRCALPHA;
+				#elif SrcBlend == 6
+				Srcblend = DESTALPHA;
+				#elif SrcBlend == 7
+				Srcblend = INVDESTALPHA;
+				#elif SrcBlend == 8
+				Srcblend = DESTCOLOR;
+				#elif SrcBlend == 9
+				Srcblend = INVDESTCOLOR;
+				#elif SrcBlend == 10
+				Srcblend = SRCALPHASAT;
+			#endif
+			#if DstBlend == 0
+				Destblend = ZERO;
+				#elif DstBlend == 1
+				Destblend = ONE;
+				#elif DstBlend == 2
+				Destblend = SRCCOLOR;
+				#elif DstBlend == 3
+				Destblend = INVSRCCOLOR;
+				#elif DstBlend == 4
+				Destblend = SRCALPHA;
+				#elif DstBlend == 5
+				Destblend = INVSRCALPHA;
+				#elif DstBlend == 6
+				Destblend = DESTALPHA;
+				#elif DstBlend == 7
+				Destblend = INVDESTALPHA;
+				#elif DstBlend == 8
+				Destblend = DESTCOLOR;
+				#elif DstBlend == 9
+				Destblend = INVDESTCOLOR;
+				#elif DstBlend == 10
+				Destblend = SRCALPHASAT;
+			#endif
+			#if Culling_Type  == 0
+				Cullmode = CCW;
+				#elif Culling_Type == 1
+				Cullmode = CW;
+				#elif Culling_Type == 2
+				Cullmode = None;
+			#endif
+			#if ZWrite == 0
+				ZWriteEnable = False;
+				#elif ZWrite == 1
+				ZWriteEnable = True;
+			#endif
+			VertexShader = compile vs_3_0 vs_shader();
+			PixelShader  = compile ps_3_0 ps_shader(true);
+		}
+	}
+technique Main1 < string MMDPass = "object"; bool UseTexture = false; >
+	{
+		pass Main 
+		{
+			#if SrcBlend == 0
+				Srcblend = ZERO;
+				#elif SrcBlend == 1
+				Srcblend = ONE;
+				#elif SrcBlend == 2
+				Srcblend = SRCCOLOR;
+				#elif SrcBlend == 3
+				Srcblend = INVSRCCOLOR;
+				#elif SrcBlend == 4
+				Srcblend = SRCALPHA;
+				#elif SrcBlend == 5
+				Srcblend = INVSRCALPHA;
+				#elif SrcBlend == 6
+				Srcblend = DESTALPHA;
+				#elif SrcBlend == 7
+				Srcblend = INVDESTALPHA;
+				#elif SrcBlend == 8
+				Srcblend = DESTCOLOR;
+				#elif SrcBlend == 9
+				Srcblend = INVDESTCOLOR;
+				#elif SrcBlend == 10
+				Srcblend = SRCALPHASAT;
+			#endif
+			#if DstBlend == 0
+				Destblend = ZERO;
+				#elif DstBlend == 1
+				Destblend = ONE;
+				#elif DstBlend == 2
+				Destblend = SRCCOLOR;
+				#elif DstBlend == 3
+				Destblend = INVSRCCOLOR;
+				#elif DstBlend == 4
+				Destblend = SRCALPHA;
+				#elif DstBlend == 5
+				Destblend = INVSRCALPHA;
+				#elif DstBlend == 6
+				Destblend = DESTALPHA;
+				#elif DstBlend == 7
+				Destblend = INVDESTALPHA;
+				#elif DstBlend == 8
+				Destblend = DESTCOLOR;
+				#elif DstBlend == 9
+				Destblend = INVDESTCOLOR;
+				#elif DstBlend == 10
+				Destblend = SRCALPHASAT;
+			#endif
+			#if Culling_Type  == 0
+				Cullmode = CCW;
+				#elif Culling_Type == 1
+				Cullmode = CW;
+				#elif Culling_Type == 2
+				Cullmode = None;
+			#endif
+			#if ZWrite == 0
+				ZWriteEnable = False;
+				#elif ZWrite == 1
+				ZWriteEnable = True;
+			#endif
+			VertexShader = compile vs_3_0 vs_shader();
+			PixelShader  = compile ps_3_0 ps_shader(false);
+		}
+	}
+
+///////////////////////////////////////////ShadowsON///////////////////////////////////////////
+technique Main0_SS < string MMDPass = "object_ss"; bool UseTexture = true;>
+	{
+		pass Main 
+		{
+			#if SrcBlend == 0
+				Srcblend = ZERO;
+				#elif SrcBlend == 1
+				Srcblend = ONE;
+				#elif SrcBlend == 2
+				Srcblend = SRCCOLOR;
+				#elif SrcBlend == 3
+				Srcblend = INVSRCCOLOR;
+				#elif SrcBlend == 4
+				Srcblend = SRCALPHA;
+				#elif SrcBlend == 5
+				Srcblend = INVSRCALPHA;
+				#elif SrcBlend == 6
+				Srcblend = DESTALPHA;
+				#elif SrcBlend == 7
+				Srcblend = INVDESTALPHA;
+				#elif SrcBlend == 8
+				Srcblend = DESTCOLOR;
+				#elif SrcBlend == 9
+				Srcblend = INVDESTCOLOR;
+				#elif SrcBlend == 10
+				Srcblend = SRCALPHASAT;
+			#endif
+			#if DstBlend == 0
+				Destblend = ZERO;
+				#elif DstBlend == 1
+				Destblend = ONE;
+				#elif DstBlend == 2
+				Destblend = SRCCOLOR;
+				#elif DstBlend == 3
+				Destblend = INVSRCCOLOR;
+				#elif DstBlend == 4
+				Destblend = SRCALPHA;
+				#elif DstBlend == 5
+				Destblend = INVSRCALPHA;
+				#elif DstBlend == 6
+				Destblend = DESTALPHA;
+				#elif DstBlend == 7
+				Destblend = INVDESTALPHA;
+				#elif DstBlend == 8
+				Destblend = DESTCOLOR;
+				#elif DstBlend == 9
+				Destblend = INVDESTCOLOR;
+				#elif DstBlend == 10
+				Destblend = SRCALPHASAT;
+			#endif
+			#if Culling_Type  == 0
+				Cullmode = CCW;
+				#elif Culling_Type == 1
+				Cullmode = CW;
+				#elif Culling_Type == 2
+				Cullmode = None;
+			#endif
+			#if ZWrite == 0
+				ZWriteEnable = False;
+				#elif ZWrite == 1
+				ZWriteEnable = True;
+			#endif
+			VertexShader = compile vs_3_0 vs_shader();
+			PixelShader  = compile ps_3_0 ps_shader(true);
+		}
+	}
+technique Main1_SS < string MMDPass = "object_ss"; bool UseTexture = false;>
+	{
+		pass Main 
+		{
+			#if SrcBlend == 0
+				Srcblend = ZERO;
+				#elif SrcBlend == 1
+				Srcblend = ONE;
+				#elif SrcBlend == 2
+				Srcblend = SRCCOLOR;
+				#elif SrcBlend == 3
+				Srcblend = INVSRCCOLOR;
+				#elif SrcBlend == 4
+				Srcblend = SRCALPHA;
+				#elif SrcBlend == 5
+				Srcblend = INVSRCALPHA;
+				#elif SrcBlend == 6
+				Srcblend = DESTALPHA;
+				#elif SrcBlend == 7
+				Srcblend = INVDESTALPHA;
+				#elif SrcBlend == 8
+				Srcblend = DESTCOLOR;
+				#elif SrcBlend == 9
+				Srcblend = INVDESTCOLOR;
+				#elif SrcBlend == 10
+				Srcblend = SRCALPHASAT;
+			#endif
+			#if DstBlend == 0
+				Destblend = ZERO;
+				#elif DstBlend == 1
+				Destblend = ONE;
+				#elif DstBlend == 2
+				Destblend = SRCCOLOR;
+				#elif DstBlend == 3
+				Destblend = INVSRCCOLOR;
+				#elif DstBlend == 4
+				Destblend = SRCALPHA;
+				#elif DstBlend == 5
+				Destblend = INVSRCALPHA;
+				#elif DstBlend == 6
+				Destblend = DESTALPHA;
+				#elif DstBlend == 7
+				Destblend = INVDESTALPHA;
+				#elif DstBlend == 8
+				Destblend = DESTCOLOR;
+				#elif DstBlend == 9
+				Destblend = INVDESTCOLOR;
+				#elif DstBlend == 10
+				Destblend = SRCALPHASAT;
+			#endif
+			#if Culling_Type  == 0
+				Cullmode = CCW;
+				#elif Culling_Type == 1
+				Cullmode = CW;
+				#elif Culling_Type == 2
+				Cullmode = None;
+			#endif
+			#if ZWrite == 0
+				ZWriteEnable = False;
+				#elif ZWrite == 1
+				ZWriteEnable = True;
+			#endif
+			VertexShader = compile vs_3_0 vs_shader();
+			PixelShader  = compile ps_3_0 ps_shader(false);
+		}
+	}
+
