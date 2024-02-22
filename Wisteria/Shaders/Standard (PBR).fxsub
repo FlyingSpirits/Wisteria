@@ -595,9 +595,7 @@ float4 ps_shader(vs_out i, uniform bool useTexture):COLOR0
 			PMXSpaTex *= lerp(1,DetailSpecularTex,DetailSpecular_Intensity);
 		#endif
 		
-		#if UseShadows == 1
 			PMXSpaTex *= lerp(1,Shadow,Spa_Affected_By_Shadows);
-		#endif
 	
 		BRDF += PMXSpaTex;
 		Color.a += PMXSpaTex * SpaColor.a;
