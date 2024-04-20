@@ -4,6 +4,7 @@ Wisteria features shaders in two forms of shading, which are PBR and Non-PBR.
 
 ## Shaders:
 - **Standard (PBR/Non-PBR)**
+- **Project Diva X HD**
 - **More Coming Soon...**
 
 ## Rules and Guidelines:
