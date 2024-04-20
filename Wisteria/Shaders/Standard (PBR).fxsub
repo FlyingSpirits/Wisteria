@@ -323,7 +323,7 @@ float4 ps_shader(vs_out i, uniform bool useTexture):COLOR0
 	float2 SpaVec = mul(Normal, WV) * Spa_Scale;
 		   SpaVec.x = SpaVec.x *  0.5+0.5;
 		   SpaVec.y = SpaVec.y * -0.5+0.5;
-	float4 PMXSpaTex = tex2D(PMXSPA_Sampler, SpaVec)* Spa_Intensity * SpaColor;
+	float4 PMXSpaTex = tex2D(PMXSPA_Sampler, SpaVec)* Spa_Intensity;
 
 	#if UseSingleMap == 1
 		float SpecularTex = tex2D(SpecularSampler, i.UV1);
@@ -436,6 +436,8 @@ float4 ps_shader(vs_out i, uniform bool useTexture):COLOR0
 		}
 	#endif
 	
+	Roughness *= (1 + SpecularGloss_B) * (1 - SpecularGloss_A);
+	
 	/////////////////////////////
 	#if Shading == 0
 		_Shading = 1;
@@ -508,10 +510,10 @@ float4 ps_shader(vs_out i, uniform bool useTexture):COLOR0
 		#endif
 
 	float3 F = FresnelSchlick(F0, HdotV) * NdotL;
-	float D = ndfGGX(NdotH, Roughness);
-	float G = VisSchlick(Roughness, NdotV, NdotL);
+	float D = TrowbridgeReitzNDF(NdotH, Roughness);
+	float G = SchlickGGXGeometricShadowingFunction(NdotL, NdotV, Roughness);
 	
-	float3 specular = (F * D * G) * Specular_Color * Specular;
+	float3 specular = (D * F * G)* NdotL * (Specular_Color + float4(SpecularR_A,SpecularG_A,SpecularB_A,0) - float4(SpecularR_B,SpecularG_B,SpecularB_B,0)) * Specular;
 		#if UseDetailSpecularMap == 1
 			specular *= lerp(1,DetailSpecularTex,DetailSpecular_Intensity);
 		#endif
@@ -520,8 +522,8 @@ float4 ps_shader(vs_out i, uniform bool useTexture):COLOR0
 	
 	float3 kd = lerp(1 - F, 0, Metallic);
 		   
-	float3 DiffuseBRDF = (kd * Diffuse_Color);
-	float3 AmbientBRDF = (kd * Ambient_Color);
+	float3 DiffuseBRDF = (kd * Diffuse_Color) + float4(DiffuseR_A,DiffuseG_A,DiffuseB_A,0) - float4(DiffuseR_B,DiffuseG_B,DiffuseB_B,0);
+	float3 AmbientBRDF = (kd * Ambient_Color) + float4(AmbientR_A,AmbientG_A,AmbientB_A,0) - float4(AmbientR_B,AmbientG_B,AmbientB_B,0);
 	
 	#if UseIBLs == 1
 		#if UseDiffuseIBL == 1
@@ -597,7 +599,7 @@ float4 ps_shader(vs_out i, uniform bool useTexture):COLOR0
 		
 			PMXSpaTex *= lerp(1,Shadow,Spa_Affected_By_Shadows);
 	
-		BRDF += PMXSpaTex;
+		BRDF += PMXSpaTex * SpaColor;
 		Color.a += PMXSpaTex * SpaColor.a;
 	#endif
 		

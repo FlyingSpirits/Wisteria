@@ -10,7 +10,7 @@
 #define HGSHADOW_MAPDRAW
 
 // HgShadowの必要なシャドウマップパラメータを取り込む
-#include "../../../Settings.conf"
+#include "../../Settings.conf"
 #include "HgShadow_Header.fxh"
 
 // 透過値に対する深度読み取り閾値

@@ -1,3 +1,4 @@
+#include "Wisteria/Controller.fxsub"
 #include "Wisteria/Extra/HgShadow/HgShadow_ObjHeader.fxh"
 #include "Wisteria/MMD.fxsub"
 #include "Wisteria/Math.fxsub"
@@ -5,6 +6,6 @@
 #include "Wisteria/ToneMapping.fxsub"
 
 #if UseIBLs == 1
-#define IBL_Diffuse_Texture "Wisteria/IBL/Diffuse.dds"
-#define IBL_Specular_Texture "Wisteria/IBL/Specular.dds"
+#define IBL_Diffuse_Texture "IBLs/Diffuse.dds"
+#define IBL_Specular_Texture "IBLs/Specular.dds"
 #endif

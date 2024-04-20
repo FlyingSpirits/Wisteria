@@ -269,7 +269,7 @@ float4 ps_shader(vs_out i, uniform bool useTexture):COLOR0
 	float2 SpaVec = mul(Normal, WV) * Spa_Scale;
 		   SpaVec.x = SpaVec.x *  0.5+0.5;
 		   SpaVec.y = SpaVec.y * -0.5+0.5;
-	float4 PMXSpaTex = tex2D(PMXSPA_Sampler, SpaVec)* Spa_Intensity * SpaColor;
+	float4 PMXSpaTex = tex2D(PMXSPA_Sampler, SpaVec)* Spa_Intensity;
 	
 	#if UseSpecularMap == 1
 		float4 SpecularTex = tex2D(SpecularSampler, SpecularMap_UV * SpecularMap_Scale);
@@ -357,7 +357,7 @@ float4 ps_shader(vs_out i, uniform bool useTexture):COLOR0
 		#endif
 		
 	/////////////////////////////
-		float3 specular = pow(NdotH, Specular_Gloss)* Specular_Color * Specular_Intensity;
+		float3 specular = pow(NdotH, (Specular_Gloss * (1 + SpecularGloss_A*10) * (1 - SpecularGloss_B)))* (Specular_Color + float4(SpecularR_A,SpecularG_A,SpecularB_A,0) - float4(SpecularR_B,SpecularG_B,SpecularB_B,0)) * (Specular_Intensity + SpecularPower_A - SpecularPower_B);
 		
 		#if UseSpecularMap == 1
 			specular *= lerp(1,SpecularTex,SpecularMap_Intensity);
@@ -369,8 +369,8 @@ float4 ps_shader(vs_out i, uniform bool useTexture):COLOR0
 		
 		specular *= lerp(1, Shadow, Specular_Affected_By_Shadows);
 	
-	float3 Diffuse = (Diffuse_Color);	
-	float3 Ambient = (Ambient_Color);
+	float3 Diffuse = (Diffuse_Color) + float4(DiffuseR_A,DiffuseG_A,DiffuseB_A,0) - float4(DiffuseR_B,DiffuseG_B,DiffuseB_B,0);	
+	float3 Ambient = (Ambient_Color) + float4(AmbientR_A,AmbientG_A,AmbientB_A,0) - float4(AmbientR_B,AmbientG_B,AmbientB_B,0);
 	
 	#if UseIBLs == 1
 		#if UseDiffuseIBL == 1
@@ -444,7 +444,7 @@ float4 ps_shader(vs_out i, uniform bool useTexture):COLOR0
 		
 			PMXSpaTex *= lerp(1,Shadow,Spa_Affected_By_Shadows);
 	
-		Lighting += PMXSpaTex;
+		Lighting += PMXSpaTex * SpaColor;
 		Color.a += PMXSpaTex * SpaColor.a;
 	#endif
 		

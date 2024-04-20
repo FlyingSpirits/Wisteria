@@ -7,7 +7,7 @@
 // パラメータ宣言
 
 // HgShadowのパラメータを取り込む
-#include "../../../Settings.conf"
+#include "../../Settings.conf"
 #include "HgShadow_Header.fxh"
 
 #ifndef MIKUMIKUMOVING

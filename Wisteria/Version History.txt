@@ -122,3 +122,14 @@
 	Removed Features that were in previous versions will be moved to specific shader variations that make use of them
 	The PMX Controller will be rethought of what it should control or not, thought that all options in shader was too much for a controller
 	Depending on feedback about the fallback shadows, if desired I'll consider bringing them back
+	
+2.1 (19/04/2024)
+---------------------------------------
+	-Additions
+	Project Diva X HD Variation Shader
+	ToneMap Controller
+	Material Controller
+	
+	-Adjustments
+	Moved Settings.conf to the main wisteria folder
+	Moved IBLs folder to the main folder

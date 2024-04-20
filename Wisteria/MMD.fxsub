@@ -6,7 +6,8 @@ float4x4 LWVP	:WORLDVIEWPROJECTION   < string Object = "Light"; >;
 
 float3	MMD_Camera			:POSITION  < string Object = "Camera"; >;
 float3	MMD_Light			:DIRECTION < string Object = "Light"; >;
-float3	MMD_LightAmbient	:AMBIENT   < string Object = "Light"; >;
+float4  MMD_LightDiffuse    :DIFFUSE   < string Object = "Light"; >;
+float4	MMD_LightAmbient	:AMBIENT   < string Object = "Light"; >;
 float4	PMX_Diffuse			:DIFFUSE   < string Object = "Geometry"; >;
 float3 	PMX_Ambient			:AMBIENT   < string Object = "Geometry"; >;
 
@@ -31,11 +32,10 @@ sampler2D PMXToon_Sampler = sampler_state
 	Texture = <PMXToon>;
     MINFILTER = LINEAR;
     MAGFILTER = LINEAR;
-    MIPFILTER = LINEAR;
+    MIPFILTER = NONE;
     ADDRESSU  = CLAMP;
     ADDRESSV  = CLAMP;
-	ADDRESSW  = WRAP;
-	MAXANISOTROPY = 16;
+	ADDRESSW  = CLAMP;
 };
 
 sampler2D PMXSPA_Sampler = sampler_state
